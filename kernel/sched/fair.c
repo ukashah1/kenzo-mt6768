@@ -55,8 +55,13 @@
  *
  * (default: 6ms * (1 + ilog(ncpus)), units: nanoseconds)
  */
+#ifdef CONFIG_EX_DNL // 20ms
+unsigned int sysctl_sched_latency			= 20000000ULL;
+unsigned int normalized_sysctl_sched_latency		= 20000000ULL;
+#else
 unsigned int sysctl_sched_latency			= 6000000ULL;
 unsigned int normalized_sysctl_sched_latency		= 6000000ULL;
+#endif
 
 /*
  * Enable/disable honoring sync flag in energy-aware wakeups.
@@ -95,9 +100,9 @@ enum sched_tunable_scaling sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_L
  *
  * (default: 0.75 msec * (1 + ilog(ncpus)), units: nanoseconds)
  */
-#ifdef CONFIG_EX_DNL // 1.00 msec
-unsigned int sysctl_sched_min_granularity		= 1000000ULL;
-unsigned int normalized_sysctl_sched_min_granularity	= 1000000ULL;
+#ifdef CONFIG_EX_DNL // 6.00 msec
+unsigned int sysctl_sched_min_granularity		= 6000000ULL;
+unsigned int normalized_sysctl_sched_min_granularity	= 6000000ULL;
 #else
 unsigned int sysctl_sched_min_granularity		= 750000ULL;
 unsigned int normalized_sysctl_sched_min_granularity	= 750000ULL;
@@ -123,10 +128,17 @@ unsigned int sysctl_sched_child_runs_first __read_mostly;
  *
  * (default: 1 msec * (1 + ilog(ncpus)), units: nanoseconds)
  */
+#ifdef CONFIG_EX_DNL // 10 msec
+unsigned int sysctl_sched_wakeup_granularity		= 10000000UL;
+unsigned int normalized_sysctl_sched_wakeup_granularity	= 10000000UL;
+
+const_debug unsigned int sysctl_sched_migration_cost	= 700000UL;
+#else
 unsigned int sysctl_sched_wakeup_granularity		= 1000000UL;
 unsigned int normalized_sysctl_sched_wakeup_granularity	= 1000000UL;
 
 const_debug unsigned int sysctl_sched_migration_cost	= 33000UL;
+#endif
 
 #ifdef CONFIG_SCHED_WALT
 unsigned int sysctl_sched_use_walt_cpu_util = 1;
