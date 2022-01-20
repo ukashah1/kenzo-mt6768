@@ -20,6 +20,7 @@
 #include <linux/sched.h>
 #include <linux/interrupt.h>
 #include <linux/wait.h>
+#include <linux/display_state.h>
 #include "mt-plat/sync_write.h"
 #include <debug.h>
 #include "disp_drv_log.h"
@@ -203,6 +204,13 @@ unsigned int data_lane2[2] = { 0 }; /* MIPITX_DSI_DATA_LANE2 */
 unsigned int data_lane3[2] = { 0 }; /* MIPITX_DSI_DATA_LANE3 */
 
 unsigned int mipitx_impedance_backup[5];
+
+static bool display_on;
+
+bool is_display_on(void)
+{
+	return display_on;
+}
 
 atomic_t PMaster_enable = ATOMIC_INIT(0);
 
@@ -4367,6 +4375,8 @@ int ddp_dsi_init(enum DISP_MODULE_ENUM module, void *cmdq)
 		_init_condition_wq(&(_dsi_context[i].sleep_in_done_wq));
 	}
 
+	display_on = true;
+
 	if (module == DISP_MODULE_DSIDUAL) {
 		disp_register_module_irq_callback(DISP_MODULE_DSI0,
 			_DSI_INTERNAL_IRQ_Handler);
@@ -5426,6 +5436,8 @@ int ddp_dsi_power_on(enum DISP_MODULE_ENUM module, void *cmdq_handle)
 	DSI_Reset(module, NULL);
 	_set_power_on_status(module, 1);
 
+	display_on = true;
+
 	return DSI_STATUS_OK;
 }
 
@@ -5443,6 +5455,9 @@ int ddp_dsi_power_on(enum DISP_MODULE_ENUM module, void *cmdq_handle)
 int ddp_dsi_power_off(enum DISP_MODULE_ENUM module, void *cmdq_handle)
 {
 	DISPFUNC();
+
+	display_on = false;
+
 	if (!_is_power_on_status(module))
 		return DSI_STATUS_OK;
 
@@ -5464,6 +5479,7 @@ int ddp_dsi_power_off(enum DISP_MODULE_ENUM module, void *cmdq_handle)
 #endif
 
 	_set_power_on_status(module, 0);
+	
 	return DSI_STATUS_OK;
 }
 
