@@ -922,7 +922,7 @@ static void dkgov_limits(struct cpufreq_policy *policy)
 #ifndef CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL
 static
 #endif
-struct cpufreq_governor darknesssched_gov = {
+static struct cpufreq_governor darknesssched_gov = {
 	.name = "darknesssched",
 	.owner = THIS_MODULE,
 	.init = dkgov_init,
