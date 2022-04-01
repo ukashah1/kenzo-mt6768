@@ -1017,7 +1017,7 @@ static int dugov_init(struct cpufreq_policy *policy)
 	}
 
 	policy->governor_data = du_policy;
-	stale_ns = walt_ravg_window + (walt_ravg_window >> 3);
+	stale_ns = sched_ravg_window + (sched_ravg_window >> 3);
 	du_policy->tunables = tunables;
 
 	ret = kobject_init_and_add(&tunables->attr_set.kobj, &dugov_tunables_ktype,

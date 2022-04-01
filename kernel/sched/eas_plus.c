@@ -1726,6 +1726,10 @@ inline int
 task_match_on_dst_cpu(struct task_struct *p, int src_cpu, int target_cpu)
 {
 #ifdef CONFIG_MTK_SCHED_BOOST
+	
+	struct task_struct *target_tsk;
+	struct rq *rq = cpu_rq(target_cpu);
+	
 	if (task_prefer_match(p, src_cpu))
 		return 0;
 
