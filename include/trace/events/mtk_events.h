@@ -146,34 +146,6 @@ TRACE_EVENT(ppm_update,
 		__entry->root, __get_str(limits))
 );
 
-TRACE_EVENT(ppm_user_setting,
-
-		TP_PROTO(unsigned int policy_mask,
-			int cid,
-			unsigned int min_idx,
-			unsigned int max_idx),
-
-		TP_ARGS(policy_mask, cid, min_idx, max_idx),
-
-		TP_STRUCT__entry(
-			__field(unsigned int, mask)
-			__field(int, cid)
-			__field(unsigned int, min_idx)
-			__field(unsigned int, max_idx)
-			),
-
-		TP_fast_assign(
-			__entry->mask = policy_mask;
-			__entry->cid = cid;
-			__entry->min_idx = min_idx;
-			__entry->max_idx = max_idx;
-			),
-
-		TP_printk("policy=%d cid=%d min=%d max=%d",
-				__entry->mask, __entry->cid,
-				__entry->min_idx, __entry->max_idx)
-);
-
 TRACE_EVENT(ppm_hica,
 
 	TP_PROTO(const char *cur_state,
