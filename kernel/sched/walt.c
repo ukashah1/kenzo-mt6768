@@ -3152,7 +3152,7 @@ void walt_rotation_checkpoint(int nr_big)
 	if (!hmp_capable())
 		return;
 
-	if (!sysctl_sched_walt_rotate_big_tasks || sched_boost() != NO_BOOST) {
+	if (!sysctl_sched_walt_rotate_big_tasks) {
 		walt_rotation_enabled = 0;
 		return;
 	}
